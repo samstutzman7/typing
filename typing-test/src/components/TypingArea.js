@@ -14,7 +14,7 @@ const TypingArea = ({
     return (
         <div className="section">
             <div className="text-container">
-                <p id="paragraph">{typingText}</p>
+                <p>{typingText}</p>
             </div>
             <div className="section2">
                 <ul className="resultDetails">

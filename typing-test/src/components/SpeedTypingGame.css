@@ -12,7 +12,9 @@ body{
 
 .text-container {
     width: 100%;
-    word-wrap: break-word;
+    text-align: left;
+    overflow-wrap: break-word;
+    word-wrap: normal;
 }
 
 .container {
@@ -33,11 +35,7 @@ input.input-field{
     position: absolute;
 }
 
-#paragraph{
-    /* word-break: break-word; */
-    overflow-wrap: break-word;
-    text-align: left;
-}
+
 .section{
     border: 1px solid #ced4da;
     border-radius: 5px;
