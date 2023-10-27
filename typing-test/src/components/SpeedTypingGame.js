@@ -5,11 +5,11 @@ import TypingArea from './TypingArea';
 const SpeedTypingGame = () => {
     const paragraphs = [
        `A plant is one of the most important living things that develop
-on the earth and is made up of stems, leaves, roots, and so on.
-Parts of the Plants: The part of the plant that developed
-beneath the soil is referred to as root and the part that 
-grows outside of the soil is known as the shoot. The shoot
-consists of stems, branches, leaves, flowers, fruits, and seeds.`,
+on the earth and is made up of stems, leaves, roots, and so on. Parts
+of the Plants: The part of the plant that developed beneath the soil
+is referred to as root and the part that grows outside of the soil is
+known as the shoot. The shoot consists of stems, branches, leaves,
+flowers, fruits, and seeds.`,
        `The root is the part of the plant that grows in the soil. The
 primary root emerges from the embryo. Its primary function is
 to provide the plant stability in the earth and make other
@@ -24,6 +24,11 @@ on a node are all those parts of the plant that remain above the
 ground and undergo negative subsoil development. The trees have
 brown bark and the yound and newly developed stems are green.`
     ];
+    const randomWords = [
+        'apple banana cherry date', 
+        'elderberry fig grape honeydew', 
+        'kiwi lemon mango nectarine',
+    ];
 
     const [typingText, setTypingText] = useState('');
     const [inpFieldValue, setInpFieldValue] = useState('');
@@ -35,12 +40,21 @@ brown bark and the yound and newly developed stems are green.`
     const [WPM, setWPM] = useState(0);
     const [CPM, setCPM] = useState(0);
     const [timeLimit, setTimeLimit] = useState(60);
+    const [typingMode, setTypingMode] = useState('paragraph');
 
-    const loadParagraph = () => {
-        const ranIndex = Math.floor(Math.random() * paragraphs.length);
+    const loadText = () => {
+        let text;
+        if (typingMode === 'paragraph') {
+            const ranIndex = Math.floor(Math.random() * paragraphs.length);
+            text = paragraphs[ranIndex];
+        } else {
+            const ranIndex = Math.floor(Math.random() * randomWords.length);
+            text = randomWords[ranIndex];
+        }
+
         const inputField = document.getElementsByClassName('input-field')[0];
         document.addEventListener("keydown", () => inputField.focus());
-        const content = Array.from(paragraphs[ranIndex]).map((letter, index) => (
+        const content = Array.from(text).map((letter, index) => (
             <span key={index} style={{ color: (letter !== ' ') ? 'black' : 'transparent' }}
             className={`char ${index === 0 ? 'active' : ''}`}>
                 {(letter !== ' ') ? letter : '_'}
@@ -52,6 +66,7 @@ brown bark and the yound and newly developed stems are green.`
         setMistakes(0);
         setIsTyping(false);
     };
+
     const handleKeyDown = (event) => {
         const characters = document.querySelectorAll('.char');
         if (event.key === 'Backspace' && charIndex > 0 && charIndex < characters.length && timeLeft > 0) {
@@ -125,7 +140,7 @@ brown bark and the yound and newly developed stems are green.`
             span.classList.remove("active");
         });
         characters[0].classList.add('active');
-        loadParagraph();
+        loadText();
     };
 
     const TimeLimitSelector = ({ onChange }) => {
@@ -153,8 +168,8 @@ brown bark and the yound and newly developed stems are green.`
     }, [timeLimit])
 
     useEffect(() => {
-        loadParagraph();
-    }, []);
+        loadText();
+    }, [typingMode]);
 
     useEffect(() => {
         let interval;
@@ -181,6 +196,11 @@ brown bark and the yound and newly developed stems are green.`
         <div className='container'>
             <p>Time Limit: {timeLimit}s</p>
             <TimeLimitSelector onChange={handleTimeLimitChange} />
+            <p>
+                Selected Text: {typingMode}
+            </p>
+            <button onClick={() => setTypingMode('paragraph')}>Paragraph</button>
+            <button onClick={() => setTypingMode('randomWords')}>Random Words</button>
             <input
                 type='text'
                 className='input-field'
