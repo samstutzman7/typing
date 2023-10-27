@@ -27,13 +27,14 @@ brown bark and the yound and newly developed stems are green.`
 
     const [typingText, setTypingText] = useState('');
     const [inpFieldValue, setInpFieldValue] = useState('');
-    const maxTime = 60;
+    const [maxTime, setMaxTime] = useState(60);
     const [timeLeft, setTimeLeft] = useState(maxTime);
     const [charIndex, setCharIndex] = useState(0);
     const [mistakes, setMistakes] = useState(0);
     const [isTyping, setIsTyping] = useState(false);
     const [WPM, setWPM] = useState(0);
     const [CPM, setCPM] = useState(0);
+    const [timeLimit, setTimeLimit] = useState(60);
 
     const loadParagraph = () => {
         const ranIndex = Math.floor(Math.random() * paragraphs.length);
@@ -127,6 +128,30 @@ brown bark and the yound and newly developed stems are green.`
         loadParagraph();
     };
 
+    const TimeLimitSelector = ({ onChange }) => {
+        const timeLimits = [120, 90, 60, 30, 15];
+
+        return (
+            <div className='time-limit-selector'>
+                {timeLimits.map((limit) => (
+                    <button key={limit} onClick={() => onChange(limit)}>
+                        {limit}s
+                    </button>
+                ))}
+            </div>
+        );
+    };
+
+    const handleTimeLimitChange = (newLimit) => {
+        setMaxTime(newLimit);
+        setTimeLimit(newLimit);
+        resetGame();
+    };
+
+    useEffect(() => {
+        setTimeLeft(timeLimit);
+    }, [timeLimit])
+
     useEffect(() => {
         loadParagraph();
     }, []);
@@ -154,6 +179,8 @@ brown bark and the yound and newly developed stems are green.`
 
     return (
         <div className='container'>
+            <p>Time Limit: {timeLimit}s</p>
+            <TimeLimitSelector onChange={handleTimeLimitChange} />
             <input
                 type='text'
                 className='input-field'
@@ -161,9 +188,11 @@ brown bark and the yound and newly developed stems are green.`
                 onChange={initTyping}
                 onKeyDown={handleKeyDown}
             />
+            
             <TypingArea
                 typingText={typingText}
                 inpFieldValue={inpFieldValue}
+                timeLimit={timeLimit}
                 timeLeft={timeLeft}
                 mistakes={mistakes}
                 WPM={WPM}
@@ -172,6 +201,7 @@ brown bark and the yound and newly developed stems are green.`
                 handleKeyDown={handleKeyDown}
                 resetGame={resetGame}
             />
+            
         </div>
     );
 };

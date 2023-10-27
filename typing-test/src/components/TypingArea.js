@@ -4,6 +4,7 @@ const TypingArea = ({
     typingText,
     inpFieldValue,
     timeLeft,
+    timeLimit,
     mistakes,
     WPM,
     CPM,

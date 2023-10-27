@@ -35,6 +35,27 @@ input.input-field{
     position: absolute;
 }
 
+.time-limit-selector {
+    margin-bottom: 20px;
+    display:flex;
+    justify-content: space-between;
+}
+
+.time-limit-selector button {
+    padding: 10px 20px;
+    outline: none;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    cursor: pointer;
+    background: #1d9bf0;
+    color: #fff;
+    font-size: 16px;
+    transition: all 0.5s;
+}
+
+.time-limit-selector button:hover{
+    background-color: #1879ba;
+}
 
 .section{
     border: 1px solid #ced4da;
