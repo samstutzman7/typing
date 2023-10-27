@@ -7,13 +7,13 @@ const SpeedTypingGame = () => {
        "A plant is one of the most important living things that develop on the earth and is made up of stems, leaves, roots, and so on. Parts of the Plants: The part of the plant that developed beneath the soil is referred to as root and the part that grows outside of the soil is known as the shoot. The shoot consists of stems, branches, leaves, flowers, fruits, and seeds.",
        "The root is the part of the plant that grows in the soil. The primary root emerges from the embryo. Its primary function is to provide the plant stability in the earth and make other mineral salts from the earth available to the plant for various metabolic processes. There are three types of roots i.e. Tap Root, Adventitious Roots, and Lateral Root. The roots arise from the parts of the plant and not from the rhizomes roots.",
        "Stem is the posterior part that remians above the ground and grows negatively geotropic. Internodes and nodes are found on the stem. Branch, bud, lead, petiole, flower, and inflorescence on a node are all those parts of the plant that remain above the ground and undergo negative subsoil development. The trees have brown bark and the yound and newly developed stems are green."
-    ];
+    ].map(paragraph => paragraph.split(' ').map((word, index, array) => index < array.length - 1 ? word + ' ' : word).join(''));
 
     const [typingText, setTypingText] = useState('');
     const [inpFieldValue, setInpFieldValue] = useState('');
     const maxTime = 60;
     const [timeLeft, setTimeLeft] = useState(maxTime);
-    const [charIndex, setCharIndex] = useState=(0);
+    const [charIndex, setCharIndex] = useState(0);
     const [mistakes, setMistakes] = useState(0);
     const [isTyping, setIsTyping] = useState(false);
     const [WPM, setWPM] = useState(0);
