@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './SpeedTypingGame.css';
 import TypingArea from './TypingArea';
-import { paragraphs, randomWords } from './Texts'
+import { beginner_paragraphs, intermediate_paragraphs,
+advanced_paragraphs, expert_paragraphs, beginner_randomWords,
+intermediate_randomWords, advanced_randomWords, expert_randomWords } from './Texts'
 
 const SpeedTypingGame = () => {
 
@@ -16,15 +18,44 @@ const SpeedTypingGame = () => {
     const [CPM, setCPM] = useState(0);
     const [timeLimit, setTimeLimit] = useState(60);
     const [typingMode, setTypingMode] = useState('paragraph');
+    const [difficulty, setDifficulty] = useState('beginner');
+    const [timeIsUp, setTimeIsUp] = useState(false);
+
 
     const loadText = () => {
         let text;
-        if (typingMode === 'paragraph') {
-            const ranIndex = Math.floor(Math.random() * paragraphs.length);
-            text = paragraphs[ranIndex];
-        } else {
-            const ranIndex = Math.floor(Math.random() * randomWords.length);
-            text = randomWords[ranIndex];
+        if (typingMode === 'paragraph' && difficulty === 'beginner') {
+            const ranIndex = Math.floor(Math.random() * beginner_paragraphs.length);
+            text = beginner_paragraphs[ranIndex];
+        }
+        if (typingMode === 'paragraph' && difficulty === 'intermediate') {
+            const ranIndex = Math.floor(Math.random() * intermediate_paragraphs.length);
+            text = intermediate_paragraphs[ranIndex]
+        }
+        if (typingMode === 'paragraph' && difficulty === 'advanced') {
+            const ranIndex = Math.floor(Math.random() * advanced_paragraphs.length);
+            text = advanced_paragraphs[ranIndex];
+        }
+        if (typingMode === 'paragraph' && difficulty === 'expert') {
+            const ranIndex = Math.floor(Math.random() * expert_paragraphs.length);
+            text = expert_paragraphs[ranIndex]
+        }
+
+        if (typingMode === 'randomWords' && difficulty === 'beginner') {
+            const ranIndex = Math.floor(Math.random() * beginner_randomWords.length);
+            text = beginner_randomWords[ranIndex];
+        }
+        if (typingMode === 'randomWords' && difficulty === 'intermediate') {
+            const ranIndex = Math.floor(Math.random() * intermediate_randomWords.length);
+            text = intermediate_randomWords[ranIndex]
+        }
+        if (typingMode === 'randomWords' && difficulty === 'advanced') {
+            const ranIndex = Math.floor(Math.random() * advanced_randomWords.length);
+            text = advanced_randomWords[ranIndex];
+        }
+        if (typingMode === 'randomWords' && difficulty === 'expert') {
+            const ranIndex = Math.floor(Math.random() * expert_randomWords.length);
+            text = expert_randomWords[ranIndex]
         }
 
         const inputField = document.getElementsByClassName('input-field')[0];
@@ -113,6 +144,7 @@ const SpeedTypingGame = () => {
         setTypingText('');
         setCPM(0);
         setWPM(0);
+        setTimeIsUp(false);
         const characters = document.querySelectorAll('.char');
         characters.forEach(span => {
             span.classList.remove("correct");
@@ -137,9 +169,27 @@ const SpeedTypingGame = () => {
         );
     };
 
+    const DifficultySelector = ({ onChange, value }) => {
+        return (
+            <select onChange={(e) => onChange(e.target.value)} value={value}>
+                <option value='beginner'>Beginner</option>
+                <option value='intermediate'>Intermediate</option>
+                <option value='advanced'>Advanced</option>
+                <option value='expert'>Expert</option>
+            </select>
+        )
+    }
+
+    const getSelectedText = () => {
+        let modeText = typingMode === 'paragraph' ? 'Paragraph' : 'Random Words';
+        let difficultyText = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+        return (`${difficultyText} ${modeText}`)
+    }
+
     const handleTimeLimitChange = (newLimit) => {
         setMaxTime(newLimit);
         setTimeLimit(newLimit);
+        setTimeLeft(newLimit);
         resetGame();
     };
 
@@ -149,7 +199,7 @@ const SpeedTypingGame = () => {
 
     useEffect(() => {
         loadText();
-    }, [typingMode]);
+    }, [typingMode, difficulty]);
 
     useEffect(() => {
         let interval;
@@ -166,21 +216,41 @@ const SpeedTypingGame = () => {
         } else if (timeLeft === 0) {
             clearInterval(interval);
             setIsTyping(false);
+            setTimeIsUp(true);
         }
         return () => {
             clearInterval(interval);
         };
     }, [isTyping, timeLeft]);
 
+    useEffect(() => {
+        if (timeLeft === 0) {
+            setIsTyping(false);
+            setTimeIsUp(true);
+        }
+    }, [timeLeft])
+
+    useEffect(() => {
+        if (timeIsUp) {
+            setInpFieldValue("Time's Up! Check out your stats below!")
+        }
+    }, [timeIsUp]);
+
     return (
         <div className='container'>
             <p>Time Limit: {timeLimit}s</p>
             <TimeLimitSelector onChange={handleTimeLimitChange} />
             <p>
-                Selected Text: {typingMode}
+                Selected Text: {getSelectedText()}
             </p>
-            <button onClick={() => setTypingMode('paragraph')}>Paragraph</button>
-            <button onClick={() => setTypingMode('randomWords')}>Random Words</button>
+            <div className='text-selector'>
+                <button onClick={() => setTypingMode('paragraph')}>Paragraph</button>
+                <button onClick={() => setTypingMode('randomWords')}>Random Words</button>
+                <DifficultySelector 
+                onChange={(newDifficulty) => setDifficulty(newDifficulty)} 
+                value={difficulty}
+            />            
+            </div>
             <input
                 type='text'
                 className='input-field'
@@ -188,6 +258,8 @@ const SpeedTypingGame = () => {
                 onChange={initTyping}
                 onKeyDown={handleKeyDown}
             />
+
+            {timeLeft === 0 && <p>Time's Up! Check out your stats below!</p>}
             
             <TypingArea
                 typingText={typingText}

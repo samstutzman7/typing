@@ -57,6 +57,28 @@ input.input-field{
     background-color: #1879ba;
 }
 
+.text-selector {
+    margin-bottom: 20px;
+    display:flex;
+    justify-content: space-between;
+}
+
+.text-selector button {
+    padding: 10px 20px;
+    outline: none;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    cursor: pointer;
+    background: #0047AB;
+    color: #fff;
+    font-size: 16px;
+    transition: all 0.5s;
+}
+
+.text-selector button:hover{
+    background-color: #1879ba;
+}
+
 .section{
     border: 1px solid #ced4da;
     border-radius: 5px;
@@ -121,14 +143,14 @@ button.btn {
     margin: 5px;
     border-radius: 4px;
     cursor: pointer;
-    background: #1d9bf0;
+    background: #D22B2B;
     color: #fff;
     font-size: 16px;
     transition: all 0.5s;
 }
 
 button.btn:hover{
-    background-color: #1879ba;
+    background-color: #D22B2B;
 }
 
 @media screen and (max-width : 550px){
