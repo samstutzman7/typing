@@ -60,6 +60,7 @@ const SpeedTypingGame = () => {
 
         const inputField = document.getElementsByClassName('input-field')[0];
         document.addEventListener("keydown", () => inputField.focus());
+
         const content = Array.from(text).map((letter, index) => (
             <span key={index} style={{ color: (letter !== ' ') ? 'black' : 'transparent' }}
             className={`char ${index === 0 ? 'active' : ''}`}>
@@ -258,7 +259,7 @@ const SpeedTypingGame = () => {
                 onChange={initTyping}
                 onKeyDown={handleKeyDown}
             />
-            
+
             {(isTyping == false) && timeLeft > 0 &&(
                 <p>Congratulations! Check out your stats below!</p>
             )}
