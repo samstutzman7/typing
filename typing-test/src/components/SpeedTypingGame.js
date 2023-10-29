@@ -258,8 +258,13 @@ const SpeedTypingGame = () => {
                 onChange={initTyping}
                 onKeyDown={handleKeyDown}
             />
+            
+            {(isTyping == false) && timeLeft > 0 &&(
+                <p>Congratulations! Check out your stats below!</p>
+            )}
 
             {timeLeft === 0 && <p>Time's Up! Check out your stats below!</p>}
+
             
             <TypingArea
                 typingText={typingText}
